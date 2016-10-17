@@ -1,0 +1,20 @@
+{
+  "name": "projetobower1",
+  "description": "exemplo simples utilizando grunt e bower",
+  "main": "index.html",
+  "authors": [
+    "Tamara Cavachioli"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "normalize-css": "normalize.css#^5.0.0"
+  }
+}

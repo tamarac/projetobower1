@@ -1,0 +1,3 @@
+function firstText() {
+	return 'oi';
+}
