@@ -1,6 +1,23 @@
+/* ============================================================================
+	Grid
+   =========================================================================== */	
 
-.hold {
-	width:100%;
-	max-width: $grid-width;
-	margin:0 auto;
-}
+   .hold {
+   		width: 100%;
+   		max-width: $grid-width;
+   		margin: 0 auto;
+   }
+
+   .grid {
+   		max-width: $grid-width + 200px;
+   		margin: 0 auto;
+         padding: 0;
+   }
+
+   .grid-item {
+   		margin: 5px;
+         padding: 5px;
+         padding-bottom: 20px;
+         box-sizing: border-box;
+   }
+

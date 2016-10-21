@@ -1,20 +1,24 @@
 {
-  "name": "projetobower1",
+  "name": "project",
   "version": "0.0.1",
-  "description": "exemplo simples utilizando grunt e bower",
+  "description": "Um simples projeto utilizando Grunt e Bower",
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Tamara Cavachioli",
+  "author": "Treinaweb Cursos",
   "license": "ISC",
   "devDependencies": {
     "grunt": "^1.0.1",
+    "grunt-contrib-compress": "^1.3.0",
     "grunt-contrib-connect": "^1.0.2",
-    "grunt-contrib-cssmin": "^1.0.2",
+    "grunt-contrib-imagemin": "^1.0.1",
+    "grunt-contrib-jasmine": "^1.0.3",
     "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
-    "grunt-sass": "^1.2.1",
-    "jshint-stylish": "^2.2.1"
+    "grunt-sass": "^1.2.0",
+    "grunt-spritesmith": "^6.3.1",
+    "jshint-stylish": "^2.2.0"
   }
 }

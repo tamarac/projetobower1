@@ -1,8 +1,19 @@
-body {
-	margin:0;
-	background-color: $color--light-gray;
-}
-.hold {
-	padding:15px;
-	background-color:#fff;
-}
+/* ============================================================================
+	Layout
+   =========================================================================== */	
+
+   body {
+   	margin: 0;
+   	background-color: $bg-color;
+      text-align: center;
+   }
+
+   .hold {
+   	padding: 15px;
+   	background-color: $bg-color-2;
+   }
+
+   .grid-item {
+      background-color: #fff;
+
+   }

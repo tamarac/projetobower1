@@ -1,3 +1,8 @@
-function firstText() {
-	return 'oi';
-}
+jQuery(document).ready(function($) {
+
+	$('.grid').masonry({
+	  itemSelector: '.grid-item'
+	});
+
+});
+

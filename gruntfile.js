@@ -1,22 +1,88 @@
-module.exports = function(grunt) {
+ module.exports = function(grunt) {
 
 	//config
 	grunt.initConfig({
 
+		pkg: grunt.file.readJSON('package.json'),
+		
 		//Sass
-		sass: {   // comprime e gera o css de um arquivo scss
+		sass: {   
 			options: {
 				sourceMap: true,
 				outputStyle: 'compressed'
 			},
 	        dist: {
 	            files: {
-	                'public/temp/main.css': 'assets/scss/main.scss'
+	                'public/css/style.min.css': 'assets/scss/main.scss'
 	            }
 	        }
 	    },
-	    //watch
-	    watch: { //observar alterações no arquivos configurados em files, caso tenha alteração ele executa a task informada.
+
+	    jshint: {
+	    	options: {
+	    		reporter: require('jshint-stylish'),
+	    		'curly': true,
+	    		'newcap': true,
+	    		'eqeqeq': true, 
+	    		'undef': true,
+	    		'devel': true,
+	    		'debug': true,
+	    		'globals': {
+	    			'$': true,
+	    			'jQuery': true,
+	    			'document': true
+	    	}
+	    },
+    	all: ['assets/js/main.js'],
+    	prod: {
+    		options: {	
+	    		'devel': false,
+	    		'debug': false,	  
+	    	},
+	    	files: {
+	    		src: ['assets/js/main.js']
+	    	}	  		
+    	}
+	    },
+
+	    //Uglify
+	    uglify:{
+	    	my_files: {
+	    		options: {
+	    			sourceMap: true,
+	    			sourceMapName: 'public/js/main.min.map',
+	    			banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+        					'<%= grunt.template.today("yyyy-mm-dd") %> */'
+	    		},
+	    		files: {
+	    			'public/js/main.min.js': 
+	    			[
+	    				'components/jquery/dist/jquery.js',
+	    				'components/masonry/dist/masonry.pkgd.js',
+	    				'assets/js/main.js'
+	    			]
+	    		}
+	    	}
+	    },
+
+	    //Imagemin
+	    imagemin: {
+	    	my_images: {
+	    		options: {
+	    			progressive: true
+	    		},
+	    		files: [{
+	    			expand: true,
+	    			cwd: 'assets/img/',
+	    			src: ['*.{png,jpg,gif}'],
+	    			dest: 'public/img'
+	    		}]
+	    	}
+	    },
+    
+
+	    // Watch
+	    watch: {
 	    	options: {
 	    		livereload: true
 	    	},
@@ -24,63 +90,74 @@ module.exports = function(grunt) {
 	    		files: 'assets/scss/*.scss',
 	    		tasks: 'css'
 	    	},
-	    	css: {
-	    		files: 'public/temp/main.css',
-	    		tasks: 'cssmin'
-	    	}
-
-	    },
-	    //connect
-	    	connect: { // conectar a um servidor local
-	    		server: {
-	    			options: {
-	    				port:9000,
-	    				base: '.',
-	    				hostname:'localhost',
-	    				livereload: true
-	    			}
-	    		}
+	    	sprite: {
+	    		files: 'assets/img/sprite/*.png',
+	    		tasks:'sprite'
 	    	},
-	    	//Css
-			cssmin: { // minificar css
-				target: {
-					files: {
-						'public/css/style.min.css': [
-							'components/normalize-css/normalize.css',
-							'public/temp/main.css'
-						]
-					}
-				}
-			},
-			jshint: { // validação de arquivos JS
-				options: {
-				    reporter: require('jshint-stylish'),
-				    'curly': true, // caso true alerta sobre não estar utilizando chaves ex: if(true) return true;
-				    'newcap': true, //caso true é sensitive case
-				    'eqeqeq': true, // obriga a utilizar === para comparação, para que não seja considerado variaveis de outro tipo ex: 5 === 'teste'
-				    'undef': true, // não deixa declarar variavel sem a tag var na frente
-				    'devel': true, // caso false (padrão) não deixa utilizar alert e console.log
-				    'debug'true, // caso false (padrão) não deixa utilziar o comando debugger
-				    'globals': { // configura variavel de escopo global que podem ser usadas no arquivo
-				    	'$':true,
-				    	'JQuery': true
-				    }
-				},
-				all: ['assets/js/main.js']
-			}
+	    	js: {
+	    		files: 'assets/js/main.js',
+	    		tasks: 'js'
+	    	}
+	    },
 
+	    //Connect
+	    connect: {
+	    	server: {
+	    		options: {
+	    			port: 9000,
+	    			base: '.',
+	    			hostname: 'localhost',
+	    			livereload: true
+	    		}
+	    	}
+	    },
+ 		sprite:{
+	      	all: {
+		        src: 'assets/img/sprites/*.png',
+		        dest: 'public/img/sprite.png',
+		        destCss: 'assets/scss/_sprites.scss',
+		        cssFormat: 'scss',
+		        cssTemplate: 'assets/scss/icons.mustache'
+	    	}
+    	},
+     	jasmine: {
+		    pivotal: {
+		      src: 'assets/js/hello.js',
+		      options: {
+		        specs: 'spec/*Spec.js',
+		      }
+		    }
+		},
+		compress:{
+			main: {
+				options: {
+					archive: 'project.zip'
+				},
+				files: [{
+					src: ['index.html','public'],
+					dest: '.'
+				}]
+			}
+		}
 	});
 
 	//Load plugins
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-connect');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-spritesmith');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-imagemin');
+	grunt.loadNpmTasks('grunt-contrib-jasmine');
+	grunt.loadNpmTasks('grunt-contrib-compress');
+
 	//Tasks
 	grunt.registerTask('css', ['sass']);
-	grunt.registerTask('cssmin', ['cssmin']);
-	grunt.registerTask('live', ['connect', 'watch','cssmin']);
-	grunt.registerTask('js', ['jshint:all']);
-
+	grunt.registerTask('js', ['jshint:all', 'uglify']);
+	grunt.registerTask('live', ['connect', 'watch']);
+	grunt.registerTask('images', ['imagemin', 'sprite']);
+	grunt.registerTask('build', ['jshint:prod']);	
+	grunt.registerTask('test', ['jasmine']);
+	grunt.registerTask('zip', ['compress']);
 };
